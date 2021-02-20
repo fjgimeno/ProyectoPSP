@@ -1,39 +1,41 @@
 package proyectopsp_cliente;
 
-import java.net.*;
 import java.io.*;
+import java.net.*;
 
-/**
- *
- * @author F. Javier Gimeno Ortiz
- */
 public class ProyectoPSP_Cliente {
 
-    public static void main(String args [] ) { 
-    // Comprueba los argumentos
-    if (args.length != 2) { 
-      System.err.println("Uso: java ProyectoPSP_Cliente maquina mensaje"); 
-    } 
-    else try{ 
-      // Crea el socket 
-      DatagramSocket sSocket = new DatagramSocket();
-      // Construye la dirección del socket del receptor 
-      InetAddress maquina = InetAddress.getByName(args[0]); 
-      int Puerto = 1500;
-      // Crea el mensaje
-      byte [] cadena = args[1].getBytes(); 
-      DatagramPacket mensaje = new DatagramPacket(cadena,args[1].length(), maquina, Puerto); 
-      // Envía el mensaje 
-      sSocket.send(mensaje); 
-      // Cierra el socket 
-      sSocket.close(); 
-    } catch(UnknownHostException e) { 
-      System.err.println("Desconocido: " + e.getMessage()); 
-    } catch(SocketException e) { 
-      System.err.println("Socket: " + e.getMessage()); 
-    } catch(IOException e) { 
-      System.err.println("E/S: " + e.getMessage()); 
-    } 
-  }
-    
+    public static void main(String args[]) throws Exception {
+        int port = 1469;
+        boolean active = true;
+        Socket s = new Socket("localhost", port);
+        DataInputStream din = new DataInputStream(s.getInputStream());
+        DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = "", str2 = "";
+
+        while (active) {
+            System.out.println("");
+            str2 = din.readUTF();
+            if (str2.equals("ERR_LOGIN\n")) {
+                System.out.println(str2);
+                active = false;
+            } else {
+                System.out.println("Server says: " + str2);
+                str = br.readLine();
+                dout.writeUTF(str);
+                dout.flush();
+                if (str.equals("quit") || str.equals("QUIT")) {
+                    active = false;
+                }
+            }
+        }
+
+        if (!str2.equals("ERR_LOGIN\n")) {
+            System.out.println(din.readUTF());
+        }
+        din.close();
+        dout.close();
+        s.close();
+    }
 }
