@@ -36,6 +36,6 @@ public class ProyectoPSP_Cliente {
         }
         din.close();
         dout.close();
-        s.close();
+        //s.close();
     }
 }

@@ -1,17 +1,5 @@
-{"user": [
-    {
-        "password": "admin",
-        "id": "0",
-        "username": "admin"
-    },
-    {
-        "password": "1234567890",
-        "id": "1",
-        "username": "manolo"
-    },
-    {
-        "password": "hahahaha",
-        "id": "2",
-        "username": "astolfo"
-    }
-]}
+{"user": [{
+    "password": "admin",
+    "id": "0",
+    "username": "admin"
+}]}

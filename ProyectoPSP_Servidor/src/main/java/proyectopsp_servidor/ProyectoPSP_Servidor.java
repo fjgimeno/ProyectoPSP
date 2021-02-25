@@ -86,7 +86,7 @@ public class ProyectoPSP_Servidor {
 
         try {
             FileWriter file = new FileWriter(DBROUTE);
-            file.write(root.toString(4)); // 4 són els espais d'indentació
+            file.write(root.toString(4)); // 4 sï¿½n els espais d'indentaciï¿½
             file.close();
             LOGBW.newLine();
             LOGBW.write("User inserted successfully!");
@@ -112,7 +112,7 @@ public class ProyectoPSP_Servidor {
 
         try {
             FileWriter file = new FileWriter(DBROUTE);
-            file.write(root.toString(4)); // 4 són els espais d'indentació
+            file.write(root.toString(4)); // 4 sï¿½n els espais d'indentaciï¿½
             file.close();
             LOGBW.newLine();
             LOGBW.write("User inserted successfully!");
@@ -227,191 +227,201 @@ public class ProyectoPSP_Servidor {
         }
 
         while (!userExit) {
-            String command[] = din.readUTF().split(";");
-            switch (command[0]) {
-                case "QUIT":
-                case "quit":
-                    userExit = true;
-                    dout.writeUTF("THANKS " + username + " BYE\n");
-                    dout.flush();
-                    din.close();
-                    s.close();
-                    ss.close();
-                    System.exit(0);
-
-                case "adduser":
-                case "ADDUSER":
-                    if (command.length != 3) {
-                        str2 = "ERR_BADNAME\n?\n";
-                        dout.writeUTF(str2);
+            try{
+                String command[] = din.readUTF().split(";");
+                switch (command[0]) {
+                    case "QUIT":
+                    case "quit":
+                        userExit = true;
+                        dout.writeUTF("THANKS " + username + " BYE\n");
                         dout.flush();
-                    } else {
-                        if (username.equals("admin") && command.length == 3) {
-                            switch (addUser(command[1], command[2])) {
-                                case 0:
-                                    createUserFolder(command[1]);
-                                    dout.writeUTF("OK\n?\n");
-                                    dout.flush();
-                                    break;
-                                case 1:
-                                    dout.writeUTF("ERR_DUPLICATED\n?\n");
-                                    dout.flush();
-                                    break;
-                                case 2:
-                                    dout.writeUTF("ERR_PASSWORD\n?\n");
-                                    dout.flush();
-                                    break;
-                                default:
-                                    dout.writeUTF("ERR_UNKNOWN\n?\n");
-                                    dout.flush();
-                                    break;
-                            }
-
-                            str2 = "OK\n?\n";
+                        din.close();
+                        s.close();
+                        ss.close();
+                        LOGBW.close();
+                        LOGFW.close();
+                        System.exit(0);
+                        break;
+                        
+                    case "adduser":
+                    case "ADDUSER":
+                        if (command.length != 3) {
+                            str2 = "ERR_BADNAME\n?\n";
                             dout.writeUTF(str2);
                             dout.flush();
-                        } else if (command.length != 3) {
-                            dout.writeUTF("ERR_WRONG_ARGS_NUMBER\n?\n");
+                        } else {
+                            if (username.equals("admin") && command.length == 3) {
+                                switch (addUser(command[1], command[2])) {
+                                    case 0:
+                                        createUserFolder(command[1]);
+                                        dout.writeUTF("OK\n?\n");
+                                        dout.flush();
+                                        break;
+                                    case 1:
+                                        dout.writeUTF("ERR_DUPLICATED\n?\n");
+                                        dout.flush();
+                                        break;
+                                    case 2:
+                                        dout.writeUTF("ERR_PASSWORD\n?\n");
+                                        dout.flush();
+                                        break;
+                                    default:
+                                        dout.writeUTF("ERR_UNKNOWN\n?\n");
+                                        dout.flush();
+                                        break;
+                                }
+
+                                str2 = "OK\n?\n";
+                                dout.writeUTF(str2);
+                                dout.flush();
+                            } else if (command.length != 3) {
+                                dout.writeUTF("ERR_WRONG_ARGS_NUMBER\n?\n");
+                                dout.flush();
+                            } else {
+                                System.out.println("Telling client that he/she does not have permision");
+                                LOGBW.newLine();
+                                LOGBW.write("Telling client that he/she does not have permision");
+                                dout.writeUTF("ERR_PERMISION\n?\n");
+                                dout.flush();
+                            }
+                        }
+                        break;
+
+                    case "deluser":
+                    case "DELUSER":
+                        if (command.length != 2) {
+                            str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
+                            dout.writeUTF(str2);
                             dout.flush();
                         } else {
-                            System.out.println("Telling client that he/she does not have permision");
-                            LOGBW.newLine();
-                            LOGBW.write("Telling client that he/she does not have permision");
-                            dout.writeUTF("ERR_PERMISION\n?\n");
-                            dout.flush();
-                        }
-                    }
-                    break;
-
-                case "deluser":
-                case "DELUSER":
-                    if (command.length != 2) {
-                        str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
-                        dout.writeUTF(str2);
-                        dout.flush();
-                    } else {
-                        if (username.equals("admin")) {
-                            if (!command[1].equals("admin")) {
-                                int notok = delUser(command[1]);
-                                if (notok == 0) {
-                                    deleteUserFolder(command[1]);
-                                    dout.writeUTF("OK\n?\n");
-                                    dout.flush();
-                                } else if (notok == 1) {
-                                    dout.writeUTF("ERR_USER_NAME\n?\n");
-                                    dout.flush();
+                            if (username.equals("admin")) {
+                                if (!command[1].equals("admin")) {
+                                    int notok = delUser(command[1]);
+                                    if (notok == 0) {
+                                        deleteUserFolder(command[1]);
+                                        dout.writeUTF("OK\n?\n");
+                                        dout.flush();
+                                    } else if (notok == 1) {
+                                        dout.writeUTF("ERR_USER_NAME\n?\n");
+                                        dout.flush();
+                                    } else {
+                                        dout.writeUTF("ERR_UNKNOWN\n?\n");
+                                        dout.flush();
+                                    }
                                 } else {
-                                    dout.writeUTF("ERR_UNKNOWN\n?\n");
+                                    str2 = "ERR_NOTPERMITED\n?\n";
+                                    dout.writeUTF(str2);
                                     dout.flush();
                                 }
                             } else {
-                                str2 = "ERR_NOTPERMITED\n?\n";
-                                dout.writeUTF(str2);
+                                System.out.println("Telling client that he/she does not have permision");
+                                LOGBW.newLine();
+                                LOGBW.write("Telling client that he/she does not have permision");
+                                dout.writeUTF("ERR_PERMISION\n?\n");
                                 dout.flush();
                             }
-                        } else {
-                            System.out.println("Telling client that he/she does not have permision");
-                            LOGBW.newLine();
-                            LOGBW.write("Telling client that he/she does not have permision");
-                            dout.writeUTF("ERR_PERMISION\n?\n");
-                            dout.flush();
                         }
-                    }
-                    break;
+                        break;
 
-                case "create":
-                case "CREATE":
-                    if (command.length != 2) {
-                        str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
-                        dout.writeUTF(str2);
-                        dout.flush();
-                    } else {
-                        int notok = createFile(username, command[1]);
-                        if (notok == 0) {
-                            createFile(username, command[1]);
+                    case "create":
+                    case "CREATE":
+                        if (command.length != 2) {
+                            str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
+                            dout.writeUTF(str2);
+                            dout.flush();
+                        } else {
+                            int notok = createFile(username, command[1]);
+                            if (notok == 0) {
+                                createFile(username, command[1]);
+                                dout.writeUTF("OK\n?\n");
+                                dout.flush();
+                            } else if (notok == 1) {
+                                dout.writeUTF("ERR_FILE\n?\n");
+                                dout.flush();
+                            } else {
+                                dout.writeUTF("ERR_UNKNOWN\n?\n");
+                                dout.flush();
+                            }
+                        }
+                        break;
+
+                    case "delete":
+                    case "DELETE":
+                        if (command.length != 2) {
+                            str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
+                            dout.writeUTF(str2);
+                            dout.flush();
+                        } else {
+                            int notok = deleteFile(username, command[1]);
+                            if (notok == 0) {
+                                dout.writeUTF("OK\n?\n");
+                                dout.flush();
+                            } else if (notok == 1) {
+                                dout.writeUTF("ERR_FILE\n?\n");
+                                dout.flush();
+                            } else {
+                                dout.writeUTF("ERR_UNKNOWN\n?\n");
+                                dout.flush();
+                            }
+                        }
+                        break;
+
+                    case "append":
+                    case "APPEND":
+                        if (command.length != 3) {
+                            str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
+                            dout.writeUTF(str2);
+                            dout.flush();
+                        } else {
+                            int notok = insertFile(username, command[1], command[2]);
+                            if (notok == 0) {
+                                dout.writeUTF("OK\n?\n");
+                                dout.flush();
+                            } else if (notok == 1) {
+                                dout.writeUTF("ERR_FILE\n?\n");
+                                dout.flush();
+                            } else {
+                                dout.writeUTF("ERR_UNKNOWN\n?\n");
+                                dout.flush();
+                            }
+                        }
+                        break;
+
+                    case "list":
+                    case "LIST":
+                        if (command.length != 1) {
+                            str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
+                            dout.writeUTF(str2);
+                            dout.flush();
+                        } else {
+                            String notok = listFiles(username);
+                            if (!notok.equals("NULL")) {
+                                dout.writeUTF("\n" + notok);
+                                dout.flush();
+                            } else {
+                                dout.writeUTF("ERR_NO_FILES\n?\n");
+                                dout.flush();
+                            }
                             dout.writeUTF("OK\n?\n");
                             dout.flush();
-                        } else if (notok == 1) {
-                            dout.writeUTF("ERR_FILE\n?\n");
-                            dout.flush();
-                        } else {
-                            dout.writeUTF("ERR_UNKNOWN\n?\n");
-                            dout.flush();
                         }
-                    }
-                    break;
+                        break;
 
-                case "delete":
-                case "DELETE":
-                    if (command.length != 2) {
-                        str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
+                    default:
+                        str2 = "ERR_COMMAND\n?\n";
                         dout.writeUTF(str2);
                         dout.flush();
-                    } else {
-                        int notok = deleteFile(username, command[1]);
-                        if (notok == 0) {
-                            dout.writeUTF("OK\n?\n");
-                            dout.flush();
-                        } else if (notok == 1) {
-                            dout.writeUTF("ERR_FILE\n?\n");
-                            dout.flush();
-                        } else {
-                            dout.writeUTF("ERR_UNKNOWN\n?\n");
-                            dout.flush();
-                        }
-                    }
-                    break;
-
-                case "append":
-                case "APPEND":
-                    if (command.length != 3) {
-                        str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
-                        dout.writeUTF(str2);
-                        dout.flush();
-                    } else {
-                        int notok = insertFile(username, command[1], command[2]);
-                        if (notok == 0) {
-                            dout.writeUTF("OK\n?\n");
-                            dout.flush();
-                        } else if (notok == 1) {
-                            dout.writeUTF("ERR_FILE\n?\n");
-                            dout.flush();
-                        } else {
-                            dout.writeUTF("ERR_UNKNOWN\n?\n");
-                            dout.flush();
-                        }
-                    }
-                    break;
-
-                case "list":
-                case "LIST":
-                    if (command.length != 1) {
-                        str2 = "ERR_WRONG_ARGS_NUMBER\n?\n";
-                        dout.writeUTF(str2);
-                        dout.flush();
-                    } else {
-                        String notok = listFiles(username);
-                        if (!notok.equals("NULL")) {
-                            dout.writeUTF("\n" + notok);
-                            dout.flush();
-                        } else {
-                            dout.writeUTF("ERR_NO_FILES\n?\n");
-                            dout.flush();
-                        }
-                        dout.writeUTF("OK\n?\n");
-                        dout.flush();
-                    }
-                    break;
-
-                default:
-                    str2 = "ERR_COMMAND\n?\n";
-                    dout.writeUTF(str2);
-                    dout.flush();
-                    break;
-            }
-        }
-        LOGFW.close();
+                        break;
+                }
+            } catch (EOFException ex) {
+                userExit = true;
+            } catch (IOException e) {
+                userExit = true;
+                System.out.println("Client tancat forÃ§adament!");
+            }        
+        } 
         LOGBW.close();
+        LOGFW.close();
         din.close();
         dout.close();
         s.close();
@@ -445,7 +455,7 @@ public class ProyectoPSP_Servidor {
                 bw.close();
                 fw.close();
                 return 0;
-            } catch (IOException e) {
+            } catch (IOException  e) {
                 return 1;
             }
         } else {
