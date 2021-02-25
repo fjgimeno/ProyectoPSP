@@ -82,7 +82,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\ProyectoPSP_Servidor.jar;%APP_HOME%\lib\json-simple-1.1.1.jar
+set CLASSPATH=%APP_HOME%\lib\ProyectoPSP_Servidor.jar;%APP_HOME%\lib\json-20190722.jar
 
 @rem Execute ProyectoPSP_Servidor
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %PROYECTO_PSP_SERVIDOR_OPTS%  -classpath "%CLASSPATH%" proyectopsp_servidor.ProyectoPSP_Servidor %CMD_LINE_ARGS%

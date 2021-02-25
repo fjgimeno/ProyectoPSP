@@ -1,5 +1,12 @@
-{"user": [{
-    "password": "admin",
-    "id": "0",
-    "username": "admin"
-}]}
+{"user": [
+    {
+        "password": "admin",
+        "id": "0",
+        "username": "admin"
+    },
+    {
+        "password": "hahahaha",
+        "id": "1",
+        "username": "manolo"
+    }
+]}

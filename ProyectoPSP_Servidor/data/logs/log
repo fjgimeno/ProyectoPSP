@@ -1,0 +1,14 @@
+
+User [null]2021/02/25 19:22:21: User  connected successfully!
+User manolo[Socket[addr=/127.0.0.1,port=52065,localport=1469]]2021/02/25 19:22:28: User manolo's files listed successfully!
+User manolo[Socket[addr=/127.0.0.1,port=52065,localport=1469]]2021/02/25 19:22:33: User manolo's file named 'asdasdasf' created successfully!
+User manolo[Socket[addr=/127.0.0.1,port=52065,localport=1469]]2021/02/25 19:22:39: User manolo disconected!
+User [null]2021/02/25 19:25:39: User  connected successfully!
+User admin[Socket[addr=/127.0.0.1,port=52078,localport=1469]]2021/02/25 19:25:57: User admin's files listed successfully!
+User admin[Socket[addr=/127.0.0.1,port=52078,localport=1469]]2021/02/25 19:26:16: User admin disconected!
+User [null]2021/02/25 19:26:19: User  connected successfully!
+User admin[Socket[addr=/127.0.0.1,port=52080,localport=1469]]2021/02/25 19:26:24: User admin's files listed successfully!
+User [null]2021/02/25 19:26:27: User  connected successfully!
+User manolo[Socket[addr=/127.0.0.1,port=52082,localport=1469]]2021/02/25 19:26:37: User manolo's files listed successfully!
+User admin[Socket[addr=/127.0.0.1,port=52080,localport=1469]]2021/02/25 19:26:44: User admin's files listed successfully!
+User manolo[Socket[addr=/127.0.0.1,port=52082,localport=1469]]2021/02/25 19:26:49: User manolo's files listed successfully!
